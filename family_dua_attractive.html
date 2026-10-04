@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Family Dua</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:#fff}
+body{background:#030711;overflow-x:hidden}
+.screen{min-height:100vh;display:none;align-items:center;justify-content:center;padding:24px;position:relative;overflow:hidden}
+.screen.active{display:flex}
+.bg{position:absolute;inset:0;background:
+radial-gradient(circle at 15% 20%,#5d4cff44 0 9%,transparent 30%),
+radial-gradient(circle at 85% 25%,#00d9ff35 0 8%,transparent 28%),
+radial-gradient(circle at 50% 100%,#00ff9d22 0 10%,transparent 32%),
+linear-gradient(135deg,#02040c,#08152a 55%,#02040c);z-index:-3}
+.bg:before{content:"";position:absolute;inset:-50%;background:conic-gradient(from 0deg,transparent,#00d9ff18,transparent,#8c5cff18,transparent);animation:rotate 14s linear infinite}
+.orb{position:absolute;border-radius:50%;filter:blur(2px);opacity:.55;z-index:-2}
+.o1{width:170px;height:170px;background:#00d9ff33;left:5%;top:12%;animation:float1 7s infinite}
+.o2{width:230px;height:230px;background:#8b5cf633;right:-4%;bottom:8%;animation:float2 9s infinite}
+.o3{width:90px;height:90px;background:#00ff9d33;right:25%;top:15%;animation:float1 6s infinite reverse}
+@keyframes rotate{to{transform:rotate(360deg)}}
+@keyframes float1{50%{transform:translate(35px,-25px) scale(1.18)}}
+@keyframes float2{50%{transform:translate(-30px,25px) scale(.88)}}
+.card{width:min(650px,100%);padding:34px 26px;border:1px solid #ffffff1c;border-radius:30px;background:#ffffff0b;backdrop-filter:blur(22px);box-shadow:0 30px 100px #000b;text-align:center;position:relative}
+.glow{box-shadow:0 0 70px #00d9ff16,0 30px 100px #000b}
+.loader-ring{width:92px;height:92px;border-radius:50%;border:7px solid #ffffff12;border-top-color:#00d9ff;border-right-color:#8b5cf6;animation:spin 1s linear infinite;margin:auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader-logo{font-size:32px;margin-top:-67px;margin-bottom:42px}
+h1{font-size:clamp(30px,8vw,55px);margin:0 0 12px;letter-spacing:-1px}
+h2{font-size:clamp(25px,6vw,38px);margin:0 0 12px}
+.subtitle{color:#b9c8da;line-height:1.7;margin:0 auto 24px;max-width:540px}
+.typing{min-height:30px;color:#74e8ff;font-weight:700}
+input{width:100%;padding:17px 18px;border-radius:17px;border:1px solid #ffffff25;background:#020712cc;color:#fff;font-size:17px;outline:none;transition:.25s}
+input:focus{border-color:#55ddff;box-shadow:0 0 28px #00d9ff22}
+button{width:100%;padding:16px;margin-top:14px;border:0;border-radius:17px;color:#fff;font-size:16px;font-weight:800;cursor:pointer;background:linear-gradient(100deg,#00bcd4,#705cff,#00bcd4);background-size:200%;animation:gradient 4s infinite}
+@keyframes gradient{50%{background-position:100% 0}}
+button:hover{transform:translateY(-2px)}
+.error{display:none;color:#ff9fae;margin-top:13px}
+.names{margin-top:18px;color:#8195aa;font-size:13px}
+.names span{display:none}
+.result{animation:enter .7s cubic-bezier(.2,.8,.2,1)}
+@keyframes enter{from{opacity:0;transform:translateY(35px) scale(.96)}to{opacity:1;transform:none}}
+.badge{display:inline-block;padding:8px 14px;border-radius:99px;background:#00d9ff12;border:1px solid #00d9ff25;color:#7eeeff;font-size:13px;margin-bottom:16px}
+.dua{margin-top:22px;text-align:left;padding:24px;border-radius:22px;background:#020711a8;border:1px solid #ffffff14;line-height:1.95;color:#e7eef8;font-size:16px}
+.dua strong{color:#79eaff}
+.back{background:#ffffff0d;border:1px solid #ffffff1b}
+.spark{font-size:24px;letter-spacing:10px;margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<section id="loading" class="screen active">
+<div class="bg"></div><div class="orb o1"></div><div class="orb o2"></div>
+<div class="card glow">
+  <div class="loader-ring"></div>
+  <div class="loader-logo">🤲</div>
+  <h1>Family Dua</h1>
+  <p class="typing" id="loadText"></p>
+</div>
+</section>
+
+<section id="search" class="screen">
+<div class="bg"></div><div class="orb o1"></div><div class="orb o3"></div>
+<div class="card glow">
+  <div class="spark">✦ ✧ ✦</div>
+  <h1>Family Dua</h1>
+  <p class="typing" id="typeText"></p>
+  <p class="subtitle">Apne family member ka naam enter karein aur uske liye ek khaas, detailed dua ka page kholen.</p>
+  <input id="nameInput" placeholder="Yahan naam likhein..." autocomplete="off">
+  <button onclick="openPerson()">✨ Dua Ka Page Kholein</button>
+  <div id="error" class="error">Ye naam available nahi hai. Dobara try karein.</div>
+  <div class="names">Naam enter karein — naam ki list yahan show nahi ki ja rahi.</div>
+</div>
+</section>
+
+<section id="person" class="screen">
+<div class="bg"></div><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+<div class="card glow result">
+  <div class="badge">🤲 Special Family Dua</div>
+  <h2 id="personTitle"></h2>
+  <p class="subtitle" id="personIntro"></p>
+  <div class="dua" id="personDua"></div>
+  <button class="back" onclick="show('search')">← Wapas Name Page</button>
+</div>
+</section>
+
+<script>
+const people={
+hassan:{
+title:"Hassan",
+intro:"Hassan ke liye dil se ek khaas dua.",
+dua:`<strong>Ya Allah,</strong> Hassan ko apni hifazat aur rehmat mein hamesha rakh. Uski zindagi mein imaan, sukoon, khushi aur barkat ata farma. Uske har achhe irade ko kamyabi de aur har mushkil ko asaan farma. Usko ilm-e-nafi, achhi soch, nek amal aur behtareen akhlaaq naseeb farma.<br><br>
+Ya Allah, Hassan ke liye sehat aur afiyat likh, uske waqt mein barkat de, uske rizq mein halal barkat ata farma aur uske dil ko apni yaad se roshan rakh. Usko buri nazar, buri sohbat aur har nuqsan se mehfooz farma. Uske walidain aur poori family ko khushi, sehat aur aman ata farma.<br><br>
+Ya Allah, uski har jaiz dua qabool farma, uske mustaqbil ko roshan farma aur duniya aur aakhirat dono mein kamyabi ata farma. Usko seedhe raste par qayam rakh aur hamesha apni rehmat ke saaye mein rakh. <strong>Ameen Ya Rabb-ul-Alameen. 🤲</strong>`
+},
+faria:{
+title:"Faria",
+intro:"Faria ke liye dil se ek khaas dua.",
+dua:`<strong>Ya Allah,</strong> Faria ko apni rehmat, hifazat aur mohabbat mein hamesha rakh. Uske dil ko sukoon, zindagi ko khushi aur har din ko barkat se bhar de. Usko sehat, afiyat, ilm aur nek naseeb ata farma.<br><br>
+Ya Allah, Faria ke har jaiz maqsad mein asani paida farma. Uski pareshaniyon ko door kar, uske dil se fikr aur gham ko halka farma aur uske liye behtareen raaste khol de. Usko buri nazar aur har nuqsan se mehfooz rakh.<br><br>
+Uske ghar walon ko bhi apni hifazat mein rakh, family mein mohabbat aur itminan paida farma, aur sab ke rizq aur sehat mein barkat de. Faria ki nek duaein qabool farma aur uski duniya aur aakhirat behtar farma. <strong>Ameen. 🤲</strong>`
+},
+shahid:{
+title:"Shahid",
+intro:"Shahid ke liye dil se ek khaas dua.",
+dua:`<strong>Ya Allah,</strong> Shahid ko sehat, lambi nek zindagi, sukoon aur apni khaas rehmat ata farma. Uske dil mein imaan ko mazboot kar aur usko ilm, hikmat aur achhe akhlaaq se nawaz.<br><br>
+Ya Allah, uski har mushkil ko asaan farma, har jaiz dua ko qabool farma aur uske rizq, waqt aur mehnat mein barkat ata farma. Usko har buri cheez, buri nazar aur har aise raste se bacha jo uske liye nuqsan ka sabab ho.<br><br>
+Shahid aur uski family ke darmiyan mohabbat, ekta aur sukoon hamesha qaim rakh. Unke ghar ko khushi, aman aur barkat se bhar de. Unke liye duniya mein bhi bhalai aur aakhirat mein bhi kamyabi likh. <strong>Ameen Ya Rabb. 🤲</strong>`
+},
+abida:{
+title:"Abida",
+intro:"Abida ke liye dil se ek khaas dua.",
+dua:`<strong>Ya Allah,</strong> Abida ko apni rehmat aur hifazat mein rakh. Usko sehat, sukoon, khushi aur afiyat ata farma. Uske dil ko roshan kar, uski zindagi mein barkat de aur uski har jaiz tamanna ko behtareen tareeqe se poora farma.<br><br>
+Ya Allah, Abida ki pareshaniyon ko door kar aur usko har mushkil mein sabr, himmat aur asani ata farma. Uske ghar aur family mein mohabbat, aman aur khushi qaim rakh. Sab ko buri nazar aur har nuqsan se mehfooz farma.<br><br>
+Uske rizq mein barkat, uski sehat mein afiyat aur uske mustaqbil mein khair likh. Uski nek duaein qabool farma aur usko duniya aur aakhirat ki bhalai naseeb farma. <strong>Ameen Ya Rabb-ul-Alameen. 🤲</strong>`
+}
+};
+
+function show(id){
+document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+}
+function typeText(el,text,speed=55){
+let i=0;el.textContent="";
+const t=setInterval(()=>{el.textContent+=text[i++]||"";if(i>text.length)clearInterval(t)},speed);
+}
+function openPerson(){
+const key=document.getElementById("nameInput").value.trim().toLowerCase();
+const data=people[key],err=document.getElementById("error");
+if(!data){err.style.display="block";return}
+err.style.display="none";
+document.getElementById("personTitle").textContent=data.title;
+document.getElementById("personIntro").textContent=data.intro;
+document.getElementById("personDua").innerHTML=data.dua;
+show("person");
+}
+document.getElementById("nameInput").addEventListener("keydown",e=>{if(e.key==="Enter")openPerson()});
+typeText(document.getElementById("loadText"),"A beautiful dua is being prepared...",45);
+setTimeout(()=>{
+show("search");
+typeText(document.getElementById("typeText"),"Enter a family member's name...",55);
+},3200);
+</script>
+</body>
+</html>
